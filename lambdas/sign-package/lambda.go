@@ -100,11 +100,11 @@ func (f *LambdaFunction) HandleEvent(ctx context.Context, key *openpgp.Entity, e
 	s3Key := event.Object.Key
 	if f.target_path != "" {
 		file_name := filepath.Base(event.Object.Key)
-		file_path := strings.TrimLeft(filepath.Dir(f.target_path), "/")
+		file_path := strings.TrimLeft(strings.TrimRight(f.target_path, "/"), "/")
 
 		if f.base_path != "" {
 			src_path := filepath.Dir(event.Object.Key)
-			trim_base_path := strings.TrimLeft(filepath.Dir(f.base_path), "/")
+			trim_base_path := strings.TrimLeft(strings.TrimRight(f.base_path ,"/"), "/")
 			rel_path := strings.TrimLeft(strings.TrimPrefix(src_path, trim_base_path), "/")
 			file_path = fmt.Sprintf("%s/%s", file_path, rel_path)
 		}
